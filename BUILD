@@ -13,4 +13,5 @@ go_library(
     name = "battleship_lib",
     srcs = ["main.go"],
     importpath = "github.com/anicolaspp/battleship",
+    deps = ["//server"],
 )

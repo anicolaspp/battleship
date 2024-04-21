@@ -2,8 +2,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/anicolaspp/battleship/maps"
 	"github.com/anicolaspp/battleship/server"
 )
 
@@ -11,6 +13,8 @@ func main() {
 	fmt.Println("Hello")
 
 	m := server.Module{}
+	board, _ := maps.Build(context.Background(), 10, 2)
+	fmt.Println(board)
 
 	fmt.Println(m)
 }

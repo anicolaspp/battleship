@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package github.com.anicolaspp.battleship;
+
+service Battleship {
+  
+}

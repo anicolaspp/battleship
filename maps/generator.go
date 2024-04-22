@@ -16,9 +16,8 @@ func Build(ctx context.Context, size, shipCount int) (*Map, error) {
 		return nil, errors.New("each player must have the same number of ships")
 	}
 
-	m := &Map{size: size, loc: map[int]map[int]bool{}}
-
-	return m, nil
+	m := &Map{size: size, board: make(board)}
+	return addShip(m, Red)
 }
 
 func addShip(m *Map, color Color) (*Map, error) {
@@ -41,17 +40,46 @@ type Map struct {
 
 	ships []*Ship
 
-	loc map[int]map[int]bool
+	board board
+}
+
+type board map[int]map[int]bool
+
+func (b board) setTrue(x, y int) {
+	if b[x] == nil {
+		b[x] = map[int]bool{}
+	}
+	b[x][y] = true
 }
 
 func (m *Map) addShip(s *Ship) error {
+	var added bool
 	for i := 0; i < m.size; i++ {
 		for j := 0; j < m.size; j++ {
-			// Check if the ship can be put here
+			if m.canBePlace(i, j, s) {
+				for k := 0; k < s.size; k++ {
+					if s.orientation == NorthSouth {
+						m.board.setTrue(i+k, j)
+					} else {
+						m.board.setTrue(i, j+k)
+					}
+				}
+				added = true
+			}
 		}
 	}
 
+	if !added {
+		return errors.New("ship cannot be placed anywhere")
+	}
+
+	m.ships = append(m.ships, s)
+
 	return nil
+}
+
+func (m *Map) canBePlace(x, y int, s *Ship) bool {
+	return true
 }
 
 type Ship struct {

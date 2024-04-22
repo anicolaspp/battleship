@@ -13,8 +13,8 @@ func main() {
 	fmt.Println("Hello")
 
 	m := server.Module{}
-	board, _ := maps.Build(context.Background(), 10, 2)
-	fmt.Println(board)
+	board, err := maps.Build(context.Background(), 10, 2)
+	fmt.Println(board, err)
 
 	fmt.Println(m)
 }
